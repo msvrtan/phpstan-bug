@@ -21,4 +21,11 @@ class SomeService
 		$customer->nonExistingMethod();
 	}
 
+	public function willComplain()
+	{
+		$customer = $this->customerRepository->findXOneByUuid('1');
+
+		$customer->nonExistingMethod();
+	}
+
 }
