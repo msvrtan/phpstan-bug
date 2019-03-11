@@ -2,9 +2,7 @@
 
 namespace Customer;
 
-use Doctrine\ORM\EntityRepository;
-
-class CustomerRepository extends EntityRepository
+class CustomerRepository
 {
 	public function findOneByUuid($uuid): ?CustomerEntity
 	{
