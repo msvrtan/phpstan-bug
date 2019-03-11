@@ -1,0 +1,7 @@
+language: php
+php:
+	- 7.1
+	- 7.2
+	- 7.3
+script:
+	- bin/phpstan analyse -l 7 -c phpstan.neon src/
