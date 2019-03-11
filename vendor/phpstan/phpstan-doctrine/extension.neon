@@ -1,0 +1,57 @@
+parameters:
+	doctrine:
+		repositoryClass: null
+		allCollectionsSelectable: true
+		objectManagerLoader: null
+
+conditionalTags:
+	PHPStan\Reflection\Doctrine\DoctrineSelectableClassReflectionExtension:
+		phpstan.broker.methodsClassReflectionExtension: %doctrine.allCollectionsSelectable%
+
+services:
+	-
+		class: PHPStan\Reflection\Doctrine\DoctrineSelectableClassReflectionExtension
+	-
+		class: PHPStan\Reflection\Doctrine\EntityRepositoryClassReflectionExtension
+		tags:
+			- phpstan.broker.methodsClassReflectionExtension
+	-
+		class: PHPStan\Type\Doctrine\DoctrineSelectableDynamicReturnTypeExtension
+		tags:
+			- phpstan.broker.dynamicMethodReturnTypeExtension
+	-
+		class: PHPStan\Type\Doctrine\ObjectManagerFindDynamicReturnTypeExtension
+		tags:
+			- phpstan.broker.dynamicMethodReturnTypeExtension
+	-
+		class: PHPStan\Type\Doctrine\ObjectManagerMergeDynamicReturnTypeExtension
+		tags:
+			- phpstan.broker.dynamicMethodReturnTypeExtension
+	-
+		class: PHPStan\Type\Doctrine\ObjectRepositoryDynamicReturnTypeExtension
+		tags:
+			- phpstan.broker.dynamicMethodReturnTypeExtension
+	-
+		class: PHPStan\Type\Doctrine\ObjectMetadataResolver
+		arguments:
+			objectManagerLoader: %doctrine.objectManagerLoader%
+			repositoryClass: %doctrine.repositoryClass%
+
+	-
+		class: PHPStan\PhpDoc\Doctrine\EntityRepositoryTypeNodeResolverExtension
+		tags:
+			- phpstan.phpDoc.typeNodeResolverExtension
+
+	managerRegistryGetRepository:
+		class: PHPStan\Type\Doctrine\GetRepositoryDynamicReturnTypeExtension
+		tags:
+			- phpstan.broker.dynamicMethodReturnTypeExtension
+		arguments:
+			managerClass: Doctrine\Common\Persistence\ManagerRegistry
+
+	objectManagerGetRepository:
+		class: PHPStan\Type\Doctrine\GetRepositoryDynamicReturnTypeExtension
+		tags:
+			- phpstan.broker.dynamicMethodReturnTypeExtension
+		arguments:
+			managerClass: Doctrine\Common\Persistence\ObjectManager
